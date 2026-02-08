@@ -37,6 +37,9 @@ export const redirectPathForUser = (user) => {
   if (user.role === "client") {
     return "/client/dashboard";
   }
+  if (user.role === "freelancer") {
+    return "/freelancer/dashboard";
+  }
   return "/login";
 };
 
@@ -102,6 +105,17 @@ export const AuthProvider = ({ children }) => {
     return nextUser;
   };
 
+  const switchRole = (role) => {
+    if (!role) {
+      return;
+    }
+    if (!user) {
+      return;
+    }
+    const nextUser = { ...user, role };
+    updateUser(nextUser);
+  };
+
   const logout = () => updateUser(null);
 
   const value = useMemo(
@@ -111,6 +125,7 @@ export const AuthProvider = ({ children }) => {
       loginWithGoogle,
       loginWithMicrosoft,
       signup,
+      switchRole,
       logout,
     }),
     [user]

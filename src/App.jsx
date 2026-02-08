@@ -2,9 +2,20 @@ import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider, redirectPathForUser, useAuth } from "./auth/AuthContext.jsx";
 import AgencyDashboard from "./pages/AgencyDashboard.jsx";
+import AgencyJobCreatePage from "./pages/AgencyJobCreatePage.jsx";
+import AgencyJobsPage from "./pages/AgencyJobsPage.jsx";
+import AgencyProfile from "./pages/AgencyProfile.jsx";
+import AgencyServiceCreatePage from "./pages/AgencyServiceCreatePage.jsx";
+import AgencyServicesPage from "./pages/AgencyServicesPage.jsx";
+import AnalyticsPage from "./pages/AnalyticsPage.jsx";
+import EarningsPage from "./pages/EarningsPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import MessagesInbox from "./pages/MessagesInbox.jsx";
+import OrdersPage from "./pages/OrdersPage.jsx";
+import ProjectCreatePage from "./pages/ProjectCreatePage.jsx";
 import ProjectsView from "./pages/ProjectsView.jsx";
 import ServiceMarketplace from "./pages/ServiceMarketplace.jsx";
+import SettingsPage from "./pages/SettingsPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 
 const Placeholder = ({ title, subtitle }) => (
@@ -34,6 +45,20 @@ const RoleRoute = ({ role, children }) => {
     return <Navigate to="/onboarding" replace />;
   }
   if (user.role !== role) {
+    return <Navigate to={redirectPathForUser(user)} replace />;
+  }
+  return children;
+};
+
+const MultiRoleRoute = ({ roles, children }) => {
+  const { user } = useAuth();
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  if (!user.is_onboarded) {
+    return <Navigate to="/onboarding" replace />;
+  }
+  if (!roles.includes(user.role)) {
     return <Navigate to={redirectPathForUser(user)} replace />;
   }
   return children;
@@ -87,6 +112,17 @@ const AppRoutes = () => (
       }
     />
     <Route
+      path="/freelancer/dashboard"
+      element={
+        <RoleRoute role="freelancer">
+          <Placeholder
+            title="Freelancer Dashboard"
+            subtitle="Freelancer dashboard placeholder."
+          />
+        </RoleRoute>
+      }
+    />
+    <Route
       path="/services"
       element={
         <ProtectedRoute>
@@ -97,38 +133,35 @@ const AppRoutes = () => (
     <Route
       path="/projects"
       element={
-        <ProtectedRoute>
+        <MultiRoleRoute roles={["agency", "client"]}>
           <ProjectsView />
-        </ProtectedRoute>
+        </MultiRoleRoute>
       }
     />
     <Route
       path="/projects/new"
       element={
-        <ProtectedRoute>
-          <Placeholder
-            title="New Project"
-            subtitle="Start a new project with an agency."
-          />
-        </ProtectedRoute>
+        <MultiRoleRoute roles={["agency", "client"]}>
+          <ProjectCreatePage />
+        </MultiRoleRoute>
       }
     />
     <Route
       path="/projects/:id"
       element={
-        <ProtectedRoute>
+        <MultiRoleRoute roles={["agency", "client"]}>
           <Placeholder
             title="Project Details"
             subtitle="Project milestone and deliverables view."
           />
-        </ProtectedRoute>
+        </MultiRoleRoute>
       }
     />
     <Route
       path="/agency/services"
       element={
         <RoleRoute role="agency">
-          <Placeholder title="Services" subtitle="Agency services list placeholder." />
+          <AgencyServicesPage />
         </RoleRoute>
       }
     />
@@ -136,10 +169,7 @@ const AppRoutes = () => (
       path="/agency/services/new"
       element={
         <RoleRoute role="agency">
-          <Placeholder
-            title="Create Service"
-            subtitle="Build a service package for clients."
-          />
+          <AgencyServiceCreatePage />
         </RoleRoute>
       }
     />
@@ -147,10 +177,7 @@ const AppRoutes = () => (
       path="/agency/jobs"
       element={
         <RoleRoute role="agency">
-          <Placeholder
-            title="Freelance Jobs"
-            subtitle="Manage agency freelance job posts."
-          />
+          <AgencyJobsPage />
         </RoleRoute>
       }
     />
@@ -158,10 +185,7 @@ const AppRoutes = () => (
       path="/agency/jobs/new"
       element={
         <RoleRoute role="agency">
-          <Placeholder
-            title="Post Freelance Job"
-            subtitle="Create a new freelance job post."
-          />
+          <AgencyJobCreatePage />
         </RoleRoute>
       }
     />
@@ -177,23 +201,23 @@ const AppRoutes = () => (
       path="/agency/profile"
       element={
         <RoleRoute role="agency">
-          <Placeholder title="Agency Profile" subtitle="Agency profile placeholder." />
+          <AgencyProfile />
         </RoleRoute>
       }
     />
     <Route
-      path="/agency/analytics"
+      path="/analytics"
       element={
         <RoleRoute role="agency">
-          <Placeholder title="Analytics" subtitle="Agency analytics placeholder." />
+          <AnalyticsPage />
         </RoleRoute>
       }
     />
     <Route
-      path="/agency/earnings"
+      path="/earnings"
       element={
         <RoleRoute role="agency">
-          <Placeholder title="Earnings" subtitle="Agency earnings placeholder." />
+          <EarningsPage />
         </RoleRoute>
       }
     />
@@ -201,23 +225,23 @@ const AppRoutes = () => (
       path="/messages"
       element={
         <ProtectedRoute>
-          <Placeholder title="Messages" subtitle="Unified messaging placeholder." />
+          <MessagesInbox />
         </ProtectedRoute>
       }
     />
     <Route
       path="/orders"
       element={
-        <ProtectedRoute>
-          <Placeholder title="Orders" subtitle="Orders list placeholder." />
-        </ProtectedRoute>
+        <RoleRoute role="agency">
+          <OrdersPage />
+        </RoleRoute>
       }
     />
     <Route
       path="/settings"
       element={
         <ProtectedRoute>
-          <Placeholder title="Settings" subtitle="Settings placeholder." />
+          <SettingsPage />
         </ProtectedRoute>
       }
     />

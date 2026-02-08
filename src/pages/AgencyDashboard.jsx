@@ -1,9 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext.jsx";
 
 const AgencyDashboard = () => {
-  const { logout } = useAuth();
+  const { logout, switchRole } = useAuth();
+  const navigate = useNavigate();
+
+  const handleRoleSwitch = (role, path) => {
+    switchRole(role);
+    navigate(path);
+  };
 
   return (
     <div className="page dashboard">
@@ -15,12 +21,19 @@ const AgencyDashboard = () => {
           <input placeholder="Search services, orders, or freelancers..." aria-label="Search" />
         </div>
         <div className="top-actions">
-          <button type="button" className="icon-button" aria-label="Notifications">
-            🔔
-          </button>
-          <button type="button" className="icon-button" aria-label="Messages">
+          <details className="notification-menu">
+            <summary className="icon-button" aria-label="Notifications">
+              🔔
+            </summary>
+            <div className="notification-panel">
+              <Link to="/orders">New order from Atlas</Link>
+              <Link to="/messages">New message from Everlane</Link>
+              <Link to="/agency/jobs">2 freelancer applications</Link>
+            </div>
+          </details>
+          <Link className="icon-button" to="/messages" aria-label="Messages">
             💬
-          </button>
+          </Link>
           <details className="profile-menu">
             <summary className="profile-chip">
               <span className="avatar" aria-hidden />
@@ -29,6 +42,27 @@ const AgencyDashboard = () => {
             </summary>
             <div className="profile-panel">
               <Link to="/agency/profile">Profile</Link>
+              <div className="profile-subpanel">
+                <span>Switch Role</span>
+                <button
+                  type="button"
+                  onClick={() => handleRoleSwitch("agency", "/agency/dashboard")}
+                >
+                  Agency
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleRoleSwitch("freelancer", "/freelancer/dashboard")}
+                >
+                  Freelancer
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleRoleSwitch("client", "/client/dashboard")}
+                >
+                  Client
+                </button>
+              </div>
               <Link to="/settings">Settings</Link>
               <button type="button" onClick={logout}>
                 Logout
@@ -55,10 +89,10 @@ const AgencyDashboard = () => {
           <Link className="sidebar-item" to="/agency/jobs">
             Freelance Jobs
           </Link>
-          <Link className="sidebar-item" to="/agency/earnings">
+          <Link className="sidebar-item" to="/earnings">
             Earnings
           </Link>
-          <Link className="sidebar-item" to="/agency/analytics">
+          <Link className="sidebar-item" to="/analytics">
             Analytics
           </Link>
           <div className="sidebar-group">

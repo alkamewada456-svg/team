@@ -137,12 +137,6 @@ const ServiceMarketplace = () => {
               <button className="tab active" type="button">
                 Services
               </button>
-              <button className="tab" type="button">
-                Agencies
-              </button>
-              <button className="tab" type="button">
-                Freelance jobs
-              </button>
             </div>
           </section>
 
