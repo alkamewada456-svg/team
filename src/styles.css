@@ -808,66 +808,25 @@ a:hover {
   gap: 8px;
 }
 
-.projects-grid {
+.projects-table {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
+  gap: 12px;
 }
 
-.project-tile {
+.projects-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1.4fr 1.4fr 0.8fr 0.8fr 0.8fr 0.8fr;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
   background: var(--surface);
-  border-radius: 18px;
-  padding: 16px;
   border: 1px solid var(--border);
-  display: grid;
-  gap: 12px;
+  align-items: center;
 }
 
-.project-tile-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.project-client {
-  margin: 0;
-  color: var(--muted);
+.projects-row.header {
+  background: #f7fbf8;
   font-weight: 600;
-}
-
-.project-milestone {
-  margin: 0;
-  color: var(--muted);
-}
-
-.project-progress {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-
-.progress-line {
-  width: 140px;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--border);
-  overflow: hidden;
-}
-
-.progress-line span {
-  display: block;
-  height: 100%;
-  background: var(--primary);
-}
-
-.project-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--muted);
-  font-size: 13px;
 }
 
 .status-pill {

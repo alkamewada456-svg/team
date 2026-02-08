@@ -104,32 +104,30 @@ const ProjectsView = () => {
         </button>
       </section>
 
-      <section className="projects-grid">
+      <section className="projects-table">
+        <div className="projects-row header">
+          <span>Client</span>
+          <span>Project</span>
+          <span>Milestone</span>
+          <span>Status</span>
+          <span>Due</span>
+          <span>Progress</span>
+          <span />
+        </div>
         {projects.map((project) => (
-          <article className="project-tile" key={project.id}>
-            <div className="project-tile-header">
-              <div>
-                <p className="project-client">{project.client}</p>
-                <h3>{project.title}</h3>
-              </div>
-              <span className={`status-pill status-${project.status.toLowerCase().replace(" ", "-")}`}>
-                {project.status}
-              </span>
-            </div>
-            <p className="project-milestone">Milestone: {project.milestone}</p>
-            <div className="project-progress">
-              <div className="progress-line">
-                <span style={{ width: project.progress }} />
-              </div>
-              <span>{project.progress}</span>
-            </div>
-            <div className="project-footer">
-              <span>Due {project.due}</span>
-              <Link className="secondary-button" to={`/projects/${project.id}`}>
-                Manage
-              </Link>
-            </div>
-          </article>
+          <div className="projects-row" key={project.id}>
+            <span>{project.client}</span>
+            <span>{project.title}</span>
+            <span>{project.milestone}</span>
+            <span className={`status-pill status-${project.status.toLowerCase().replace(" ", "-")}`}>
+              {project.status}
+            </span>
+            <span>{project.due}</span>
+            <span>{project.progress}</span>
+            <Link className="secondary-button" to={`/projects/${project.id}`}>
+              Manage
+            </Link>
+          </div>
         ))}
       </section>
     </div>
