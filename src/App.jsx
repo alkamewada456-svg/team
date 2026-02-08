@@ -232,9 +232,9 @@ const AppRoutes = () => (
     <Route
       path="/orders"
       element={
-        <RoleRoute role="agency">
+        <MultiRoleRoute roles={["agency", "client"]}>
           <OrdersPage />
-        </RoleRoute>
+        </MultiRoleRoute>
       }
     />
     <Route
